@@ -1,5 +1,18 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Franglais</title>
+<meta name="theme-color" content="#1d5fe0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Franglais">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:16px}img{max-width:100%}[hidden]{display:none!important}</style>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap">
@@ -51,7 +64,8 @@ button:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-
 .hero.day{background:var(--sun-soft)} .hero.night{background:var(--night-soft)}
 .hero svg{flex:none}
 .hero .word{font-family:var(--display);font-weight:700;font-size:2.4rem;line-height:1}
-.hero .ctx{margin-top:6px;font-size:.95rem;color:var(--muted)}
+.hero .ctx{margin-top:6px;font-size:.98rem;font-weight:700;color:var(--ink)}
+.hero .eyebrow{color:var(--ink);opacity:.75}
 .num{font-family:var(--display);font-weight:600;font-size:2.2rem;line-height:1;font-variant-numeric:tabular-nums}
 .stat{display:flex;flex-direction:column;gap:4px}
 .stat .lbl{color:var(--muted);font-size:.85rem;font-weight:700}
@@ -148,6 +162,8 @@ ul.ex li span{color:var(--muted);font-size:.9rem}
 .choices button{font-size:1.05rem;text-align:left}
 </style>
 
+</head>
+<body>
 <div class="app" id="app">
   <section id="s-home" class="stack"></section>
   <section id="s-lesson" class="stack hide"></section>
@@ -624,6 +640,38 @@ ul.ex li span{color:var(--muted);font-size:.9rem}
       (picked?'<div class="reply '+(story.pick===0?'':'soft')+'">'+s.opts[story.pick][1]+'</div><button class="btn" data-sn="1">'+(story.step===N-1?'Finish the story':'Next')+'</button>':'')+'</div>';
   }
 
+  /* ---------- pairs from section 32, part 2 ---------- */
+  CONTENT.sais=ex('Je sais','zhuh say','I know','yes','Je sais when you know a fact or the answer. People often say Oui first, then Je sais.',[['Oui, je sais.','Yes, I know.'],["Je sais où c'est.",'I know where it is.']]);
+  CONTENT.nesaispas=ex('Je ne sais pas','zhuh nuh say pah',"I don't know",'no','Je ne sais pas when you do not know. Say Non first if you like. Among friends it gets squashed into "chais pas", but start with the full form.',[['Non, je ne sais pas.',"No, I don't know."],['Je ne sais pas, papa.',"I don't know, Dad."]]);
+  CONTENT.cbon=ex("C'est bon",'seh BOHN','It is good / I am fine','yes',"C'est bon for food that tastes good, or to say everything is fine. Non merci, c'est bon means \"No thanks, I'm fine\".",[['Mmm, c\'est bon !',"Mmm, it's good!"],["Non merci, c'est bon.","No thanks, I'm fine."]]);
+  CONTENT.pasbon=ex("Ce n'est pas bon",'suh neh pah BOHN','It is not good','no',"Ce n'est pas bon for food, news or a plan that is not good. In speech many people say C'est pas bon. Add merci to stay kind.",[["Ce n'est pas bon.",'It is not good.'],["C'est pas bon, mais merci !","It's not good, but thank you!"]]);
+  CONTENT.encore=ex('Encore','ahn-KOR','Again / more','yes',"Encore to ask for more, or to do something again. A child's favourite word.",[['Encore !','Again!'],["Encore un peu, s'il vous plaît.",'A little more, please.']]);
+  CONTENT.stop=ex('Stop','stohp','Stop','no','Stop to make something end, in a playful or serious way. Same word as English, said the French way.',[['Stop, papa !','Stop, Dad!'],["Stop, c'est bon !",'Stop, that is enough!']]);
+  PAIRS.push({id:'know',a:'sais',b:'nesaispas',title:'Je sais / Je ne sais pas',sub:"I know / I don't know"});
+  PAIRS.push({id:'good',a:'cbon',b:'pasbon',title:"C'est bon / Ce n'est pas bon",sub:'It is good / It is not good'});
+  PAIRS.push({id:'again',a:'encore',b:'stop',title:'Encore / Stop',sub:'Again / Stop'});
+  FL.sais=[[['Do you know','Tu sais'],['who this is?',"qui c'est ?"]],[['Yes,','Oui,'],['I know.','je sais.',1]]];
+  FL.nesaispas=[[['Where is','Où est'],['the village?','le village ?']],[['No,','Non,'],["I don't know.",'je ne sais pas.',1]]];
+  FL.cbon=[[['The cake,','Le gâteau,'],['is it good?',"c'est bon ?"]],[['Yes,','Oui,'],["it's good!","c'est bon !",1]]];
+  FL.pasbon=[[['The soup,','La soupe,'],['is it good?',"c'est bon ?"]],[['No,','Non,'],['it is not good.',"ce n'est pas bon.",1]]];
+  FL.encore=[[['Do you want','Tu veux'],['to see it again?','voir encore ?']],[['Again,','Encore,',1],['please!',"s'il te plaît !"]]];
+  FL.stop=[[['Tonton is tickling','Tonton chatouille'],['the baby.','le bébé.']],[['Stop,','Stop,',1],['Tonton!','tonton !']]];
+  STORIES.know={title:"Papi's old photo",setup:"Papi shows you an old black-and-white photo of a village.",steps:[
+    st('Papi',"Tu sais qui c'est ?","Do you know who this is?",[["Oui, je sais ! C'est toi !","Papi gasps: ten years old, and you spotted him."],["Je ne sais pas, papi.","It is Papi at ten! Look at the smile: Oui, je sais."]],"It is Papi when he was ten. You can tell by the smile."),
+    st('Papi',"Et ce village, tu sais où c'est ?","And this village, do you know where it is?",[["Non, je ne sais pas, papi.","Honest. Papi is happy to tell you."],["Oui, je sais, papi.","You have never heard of it: Non, je ne sais pas."]],"You have never heard of this village."),
+    st('Mamie',"Tu sais ce que papi a dit ce jour-là ?","Do you know what Papi said that day?",[["Oui, je sais : Bonjour, madame !","Papi blushes. Mamie laughs."],["Non, je ne sais pas, mamie.","He has told you a hundred times: Oui, je sais."]],"Mamie smiles. Papi has told you this story a hundred times.")],
+    end:"Papi laughs until he cries. Some stories are worth hearing a hundred times."};
+  STORIES.good={title:"Mamie's cake and Tonton's soup",setup:"Sunday at Mamie's. Mamie baked her chocolate cake for the first time since the summer.",steps:[
+    st('Mamie',"Alors, c'est bon ?","So, is it good?",[["Oui, mamie, c'est bon !","Mamie's face lights up."],["Non, mamie, ce n'est pas bon.","The cake is delicious! Oui, c'est bon."]],"The cake is delicious."),
+    st('Mamie',"Tu veux une deuxième part ?","Do you want a second slice?",[["Non merci, mamie, c'est bon.","Polite and clear: you are fine."],["Oui, c'est bon.","That means yes, but you are full: Non merci, c'est bon."]],"You are full."),
+    st('Tonton',"Alors, c'est bon ?","So, is it good?",[["Ce n'est pas bon, tonton… mais merci !","Honest and kind. Tonton laughs and adds water."],["Oui, c'est bon, tonton !","Now Tonton serves you a second bowl."]],"You taste Tonton's soup. It is far too salty.")],
+    end:"Cake, laughter, and a soup rescued with water. Eating together is the real recipe."};
+  STORIES.again={title:"Tonton's party tricks",setup:"Family afternoon. Tonton is in a very good mood.",steps:[
+    st('Tonton',"Tu veux voir encore ?","Do you want to see it again?",[["Encore, tonton !","Tonton bows. The coin vanishes again."],["Stop, tonton !","The trick was amazing! Try Encore."]],"Tonton makes a coin disappear. Your cousin cheers. You loved it."),
+    st('Cousin',"Hahaha… ! Hahaha… !","Hahaha… ! Hahaha… !",[["Stop, tonton !","The baby breathes again."],["Encore, tonton !","The baby cannot breathe from laughing: Stop."]],"Tonton keeps tickling the little cousin, who can barely breathe."),
+    st('Tata',"On danse encore une chanson ?","Shall we dance one more song?",[["Encore, tata !","Tata turns the music up."],["Stop, tata !","The song is great! Try Encore."]],"The music is wonderful.")],
+    end:"Tonton takes a bow, the baby catches his breath, and Tata dances in the kitchen. A day with a lot of laughter."};
+
   /* ---------- progression (sections 22-26) ---------- */
   var STAGES=['Beginner','Franglais','Français en action','Français autonome'];
   function exprState(id){
@@ -787,5 +835,6 @@ ul.ex li span{color:var(--muted);font-size:.9rem}
   go('home');
 })();
 </script>
-
-</body></html>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script>
+</body>
+</html>
