@@ -1,0 +1,791 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Franglais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap">
+<style>
+/* Layout: single phone-width column, five tabs (Home, Lesson, Franglais, Mission, History) */
+:root{
+  --bg:#eaf2fd; --card:#ffffff; --ink:#11264b; --muted:#5a6d8e; --line:#d6e2f5;
+  --blue:#1d5fe0; --blue-ink:#ffffff; --blue-soft:#e2ecff;
+  --sun:#f3ac22; --sun-soft:#fff3d6; --night:#243a7a; --night-soft:#dfe5fa;
+  --good:#17895a; --good-soft:#dcf4e8; --shadow:0 6px 20px rgba(29,95,224,.10);
+  --display:'Fredoka','Trebuchet MS',system-ui,sans-serif;
+  --body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1325; --card:#16213d; --ink:#e9f0ff; --muted:#9db0d6; --line:#2a3a64;
+  --blue:#5b8dff; --blue-ink:#071230; --blue-soft:#1d2d5a;
+  --sun:#f6bb4a; --sun-soft:#3b3115; --night:#9db4ff; --night-soft:#222f5e;
+  --good:#4fd39b; --good-soft:#143a2e; --shadow:0 6px 20px rgba(0,0,0,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1325; --card:#16213d; --ink:#e9f0ff; --muted:#9db0d6; --line:#2a3a64;
+  --blue:#5b8dff; --blue-ink:#071230; --blue-soft:#1d2d5a;
+  --sun:#f6bb4a; --sun-soft:#3b3115; --night:#9db4ff; --night-soft:#222f5e;
+  --good:#4fd39b; --good-soft:#143a2e; --shadow:0 6px 20px rgba(0,0,0,.35); color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45}
+.app{max-width:440px;margin:0 auto;padding-inline:16px;padding-block:18px 110px}
+h1,h2,h3{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance;line-height:1.15}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.logo{font-family:var(--display);font-weight:700;font-size:2rem;color:var(--blue);letter-spacing:-.5px}
+.tag{color:var(--muted);font-size:.9rem}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px}
+.card{background:var(--card);border-radius:20px;padding:16px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:14px}
+.row{display:flex;gap:12px}
+.row>*{flex:1;min-width:0}
+.eyebrow{font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.btn{background:var(--blue);color:var(--blue-ink);border:0;border-radius:14px;padding:14px 16px;font-weight:800;font-size:1rem;width:100%}
+.btn.ghost{background:var(--blue-soft);color:var(--blue)}
+.btn.small{padding:10px 14px;width:auto;font-size:.9rem}
+.big{font-family:var(--display);font-weight:600;font-size:2.6rem;line-height:1}
+.pron{font-weight:800;color:var(--blue)}
+.hide{display:none!important}
+
+/* hero */
+.hero{border-radius:22px;padding:18px;display:flex;gap:14px;align-items:center;justify-content:space-between}
+.hero.day{background:var(--sun-soft)} .hero.night{background:var(--night-soft)}
+.hero svg{flex:none}
+.hero .word{font-family:var(--display);font-weight:700;font-size:2.4rem;line-height:1}
+.hero .ctx{margin-top:6px;font-size:.95rem;color:var(--muted)}
+.num{font-family:var(--display);font-weight:600;font-size:2.2rem;line-height:1;font-variant-numeric:tabular-nums}
+.stat{display:flex;flex-direction:column;gap:4px}
+.stat .lbl{color:var(--muted);font-size:.85rem;font-weight:700}
+
+/* pair switch */
+.seg{display:flex;gap:8px}
+.seg button{flex:1;border:2px solid transparent;border-radius:14px;padding:12px;font-family:var(--display);font-weight:600;font-size:1.2rem;display:flex;gap:8px;align-items:center;justify-content:center;background:var(--blue-soft);color:var(--ink)}
+.seg button[aria-pressed="true"]{border-color:var(--blue);background:var(--card)}
+.play{display:flex;gap:12px;align-items:center;width:100%;background:var(--blue-soft);border:0;border-radius:14px;padding:12px 14px;font-weight:700;color:var(--ink);text-align:left}
+.play .dot{width:38px;height:38px;border-radius:50%;background:var(--blue);display:grid;place-items:center;flex:none}
+ul.ex{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+ul.ex li b{display:block}
+ul.ex li span{color:var(--muted);font-size:.9rem}
+
+/* scene */
+.choices{display:flex;gap:10px;flex-wrap:wrap}
+.choices button{flex:1;min-width:120px;border:2px solid var(--line);background:var(--card);border-radius:14px;padding:12px;font-family:var(--display);font-weight:600;font-size:1.2rem}
+.say-bubble{background:var(--blue-soft);border-radius:16px;padding:12px 14px;font-weight:700}
+.reply{border-radius:14px;padding:12px 14px;background:var(--good-soft);color:var(--ink);font-weight:700}
+.reply.soft{background:var(--sun-soft)}
+
+/* franglais */
+.bar{height:12px;background:var(--blue-soft);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--blue);border-radius:99px;transition:width .3s}
+.sentence{font-size:1.35rem;font-weight:700;line-height:1.6}
+.sentence+.sentence{color:var(--muted);margin-top:4px}
+.fr{font:inherit;font-weight:800;color:var(--blue);background:var(--blue-soft);border:0;border-radius:8px;padding:0 6px;cursor:pointer}
+.fr:hover{filter:brightness(.97)}
+.levels{display:flex;gap:6px;justify-content:space-between;font-size:.72rem;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+
+/* mission */
+.ring{width:210px;height:210px;margin:6px auto;position:relative}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .t{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:600;font-size:3rem;font-variant-numeric:tabular-nums}
+.ring circle{fill:none;stroke-width:12}
+.plus{background:var(--blue);color:var(--blue-ink);border:0;border-radius:18px;padding:18px;font-family:var(--display);font-weight:600;font-size:1.5rem;width:100%}
+.plus:active{transform:scale(.98)}
+.center{text-align:center}
+
+/* history */
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips button{border:0;border-radius:99px;padding:8px 14px;background:var(--card);font-weight:800;color:var(--muted)}
+.chips button[aria-pressed="true"]{background:var(--blue);color:var(--blue-ink)}
+.hist{display:flex;flex-direction:column}
+.hist .it{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.hist .it:last-child{border-bottom:0}
+.hist .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none}
+.hist .ic.d{background:var(--sun-soft)} .hist .ic.n{background:var(--night-soft)} .hist .ic.o{background:var(--blue-soft)}
+.pairs{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
+.pairs button{flex:none;border:0;border-radius:99px;padding:8px 14px;background:var(--card);font-weight:800;color:var(--muted);white-space:nowrap}
+.pairs button[aria-pressed="true"]{background:var(--blue);color:var(--blue-ink)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts button{border:2px solid var(--line);background:var(--card);border-radius:12px;padding:10px 12px;font-weight:700;text-align:left}
+.opts button[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft)}
+.gr{display:block;width:100%;text-align:left;background:var(--blue-soft);border:0;border-radius:14px;padding:12px 14px;font-size:1.1rem;font-weight:700}
+.gr small{display:block;color:var(--muted);font-weight:600;font-size:.85rem;margin-top:2px}
+.gr .aux{background:var(--blue);color:var(--blue-ink);border-radius:6px;padding:0 6px}
+.gr .pp{text-decoration:underline;text-decoration-color:var(--sun);text-decoration-thickness:3px;text-underline-offset:3px}
+.hist .nm{flex:1;min-width:0;font-weight:800}
+.hist .nm small{display:block;color:var(--muted);font-weight:600}
+.hist .p{color:var(--good);font-weight:800}
+.badge{font-size:.7rem;background:var(--sun-soft);border-radius:6px;padding:1px 6px;margin-left:6px;font-weight:800;color:var(--muted)}
+
+/* tab bar */
+.tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(440px,100%);background:var(--card);display:flex;justify-content:space-around;padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);border-radius:20px 20px 0 0;box-shadow:0 -6px 20px rgba(29,95,224,.08)}
+.tabs button{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 8px;color:var(--muted);font-size:.72rem;font-weight:800;border-radius:12px;flex:1}
+.tabs button[aria-current="page"]{color:var(--blue)}
+.demo{display:flex;gap:8px;align-items:center;font-size:.8rem;color:var(--muted);margin-top:20px;flex-wrap:wrap}
+.demo select{font:inherit;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:4px 6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.journey{display:flex;justify-content:space-between;gap:6px}
+.jn{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.jd{width:28px;height:28px;border-radius:50%;border:3px solid var(--line);display:grid;place-items:center;font-weight:800;font-size:.8rem;color:var(--blue-ink)}
+.jn.done .jd{background:var(--good);border-color:var(--good)}
+.jn.now .jd{border-color:var(--blue);background:var(--blue-soft)}
+.jl{font-size:.7rem;font-weight:800;color:var(--muted);line-height:1.2}
+.jn.now .jl{color:var(--blue)}
+.crit{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}
+.crit .bar{grid-column:1/-1;height:8px}
+.pill{font-size:.72rem;font-weight:800;border-radius:99px;padding:3px 10px;white-space:nowrap;background:var(--blue-soft);color:var(--blue)}
+.pill.s-ACTIVE,.pill.s-MASTERED{background:var(--good-soft);color:var(--good)}
+.pill.s-NEEDS_REACTIVATION{background:var(--sun-soft);color:var(--ink)}
+.pill.s-NEW{background:var(--line);color:var(--muted)}
+.tabs button{font-size:.66rem;padding-inline:2px}
+.inp{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+.sdots{display:flex;gap:6px}
+.sdots i{flex:1;height:6px;border-radius:99px;background:var(--line)}
+.sdots i.d{background:var(--good)} .sdots i.n{background:var(--blue)}
+.who{font-weight:800;color:var(--blue);font-size:.9rem}
+.choices button.ok{border-color:var(--good);background:var(--good-soft)}
+.choices button.bad{border-color:var(--sun);background:var(--sun-soft)}
+.choices button:disabled{cursor:default;color:var(--ink)}
+.choices button{font-size:1.05rem;text-align:left}
+</style>
+
+<div class="app" id="app">
+  <section id="s-home" class="stack"></section>
+  <section id="s-lesson" class="stack hide"></section>
+  <section id="s-fran" class="stack hide"></section>
+  <section id="s-life" class="stack hide"></section>
+  <section id="s-gram" class="stack hide"></section>
+  <section id="s-prog" class="stack hide"></section>
+  <section id="s-ctx" class="stack hide"></section>
+  <section id="s-set" class="stack hide"></section>
+  <section id="s-mission" class="stack hide"></section>
+  <section id="s-result" class="stack hide"></section>
+  <section id="s-history" class="stack hide"></section>
+
+  <div class="demo">
+    <label for="demoTime">Demo clock</label>
+    <select id="demoTime">
+      <option value="">Real time</option>
+      <option value="09:00">09:00 morning</option>
+      <option value="16:45">16:45 late afternoon</option>
+      <option value="18:30">18:30 evening</option>
+      <option value="02:00">02:00 night</option>
+    </select>
+  </div>
+</div>
+
+<nav class="tabs" aria-label="Main">
+  <button data-go="home"></button>
+  <button data-go="lesson"></button>
+  <button data-go="life"></button>
+  <button data-go="mission"></button>
+  <button data-go="history"></button>
+  <button data-go="prog"></button>
+</nav>
+
+<script>
+(function(){
+  /* ---------- content (kept separate from the engine, as in section 29) ---------- */
+  var CONTENT = {
+    bonjour:{fr:'Bonjour',pron:'bohn-ZHOOR',en:'Hello / Good day',kind:'d',
+      when:'Bonjour in the morning, in the afternoon, or whenever you meet someone for the first time that day.',
+      examples:[['Bonjour, comment ça va ?','Hello, how are you?'],['Bonjour madame !','Good day, madam!']],
+      sentence:['Good morning, how are you?','[[Bonjour]], how are you?','[[Bonjour]], [[comment ça va]] ?','[[Bonjour]], [[comment ça va]] ?','[[Bonjour]], [[comment ça va]] ?','[[Bonjour]], [[comment ça va]] ?']},
+    bonsoir:{fr:'Bonsoir',pron:'bohn-SWAHR',en:'Good evening',kind:'n',
+      when:'Bonsoir in the evening, from about 6 pm, when you arrive or meet someone.',
+      examples:[['Bonsoir, à demain !','Good evening, see you tomorrow!'],['Bonsoir, vous allez bien ?','Good evening, are you well?']],
+      sentence:['Good evening, how are you?','[[Bonsoir]], how are you?','[[Bonsoir]], [[comment ça va]] ?','[[Bonsoir]], [[comment ça va]] ?','[[Bonsoir]], [[comment ça va]] ?','[[Bonsoir]], [[comment ça va]] ?']}
+  };
+  CONTENT.oui={fr:'Oui',pron:'wee',en:'Yes',kind:'yes',
+    when:'Oui to agree, accept, or answer a question positively.',
+    examples:[['Oui, merci !','Yes, thank you!'],['Oui, bien sûr.','Yes, of course.']],
+    sentence:['Do you want a coffee?','Do you want a coffee?','Do you want a [[café]] ?','[[Tu veux un café]] ?','[[Tu veux un café]] ?','[[Tu veux un café]] ?'],
+    reply:['— Yes, please.','— [[Oui]], please.','— [[Oui]], please.',"— [[Oui]], [[s'il vous plaît]].","— [[Oui]], [[s'il vous plaît]].","— [[Oui]], [[s'il vous plaît]]. [[Merci]] !"],
+    listen:"Tu veux un café ? Oui, s'il vous plaît. Merci !"};
+  CONTENT.non={fr:'Non',pron:'nohn',en:'No',kind:'no',
+    when:'Non to refuse or disagree. Add merci to stay polite.',
+    examples:[['Non, merci.','No, thank you.'],["Non, pas aujourd'hui.",'No, not today.']],
+    sentence:['Do you want more coffee?','Do you want more coffee?','Do you want more [[café]] ?','[[Tu veux encore du café]] ?','[[Tu veux encore du café]] ?','[[Tu veux encore du café]] ?'],
+    reply:['— No, thank you.','— [[Non]], thank you.','— [[Non]], thank you.','— [[Non]], [[merci]].','— [[Non]], [[merci]].',"— [[Non]], [[merci]]. [[C'est bon]]."],
+    listen:"Tu veux encore du café ? Non, merci. C'est bon."};
+  CONTENT.merci={fr:'Merci',pron:'mehr-SEE',en:'Thank you',kind:'heart',
+    when:'Merci whenever someone helps you, serves you or is kind to you.',
+    examples:[['Merci beaucoup !','Thank you very much!'],['Merci, bonne journée !','Thanks, have a good day!']],
+    sentence:['A stranger holds the door for you.','A stranger holds the door for you.','A stranger holds the [[porte]] for you.','A stranger [[tient la porte]] for you.','A stranger [[tient la porte]] for you.','A stranger [[tient la porte]] for you.'],
+    reply:['— Thank you!','— [[Merci]] !','— [[Merci]] !','— [[Merci beaucoup]] !','— [[Merci beaucoup]] !','— [[Merci beaucoup]] !'],
+    listen:'Merci beaucoup !'};
+  CONTENT.derien={fr:'De rien',pron:'duh ree-EHN',en:"You're welcome",kind:'smile',
+    when:'De rien after someone thanks you. It means "of nothing".',
+    examples:[['De rien !',"You're welcome!"],['Pas de problème.','No problem.']],
+    sentence:['A stranger says: "Thank you!"','A stranger says: "[[Merci]] !"','A stranger says: "[[Merci]] !"','A stranger says: "[[Merci]] !"','A stranger says: "[[Merci beaucoup]] !"','A stranger says: "[[Merci beaucoup]] !"'],
+    reply:["— You're welcome!",'— [[De rien]] !','— [[De rien]] !','— [[De rien]] !','— [[De rien]] !','— [[De rien]] ! [[Bonne journée]] !'],
+    listen:'Merci beaucoup ! De rien ! Bonne journée !'};
+  var PAIRS=[
+    {id:'greet',a:'bonjour',b:'bonsoir',title:'Bonjour / Bonsoir',sub:'Hello / Good evening'},
+    {id:'yesno',a:'oui',b:'non',title:'Oui / Non',sub:'Yes / No'},
+    {id:'thanks',a:'merci',b:'derien',title:'Merci / De rien',sub:"Thank you / You're welcome"}];
+  function pairOf(id){return PAIRS.filter(function(p){return p.a===id||p.b===id||(p.members&&p.members.indexOf(id)>-1)})[0]}
+  var LIFE={
+    hier:{label:'Hier',q:'What did you do yesterday?',qfr:"Qu'est-ce que tu as fait hier ?",stem:'Hier',opts:[
+      {en:'I visited my grandma',fr:"j'ai rendu visite à ma grand-mère"},{en:'I worked',fr:"j'ai travaillé"},{en:'I saw a friend',fr:"j'ai vu un ami"},{en:'I cooked',fr:"j'ai cuisiné"}]},
+    aujourdhui:{label:"Aujourd'hui",q:'What are you doing today?',qfr:"Qu'est-ce que tu fais aujourd'hui ?",stem:"Aujourd'hui",opts:[
+      {en:'I stay home',fr:'je reste à la maison'},{en:'I work',fr:'je travaille'},{en:'I see my family',fr:'je vois ma famille'},{en:'I cook',fr:'je cuisine'}]},
+    demain:{label:'Demain',q:'What will you do tomorrow?',qfr:"Qu'est-ce que tu vas faire demain ?",stem:'Demain',opts:[
+      {en:"I'm going to work",fr:'je vais travailler'},{en:"I'm going to see a friend",fr:'je vais voir un ami'},{en:"I'm going to rest",fr:'je vais me reposer'},{en:"I'm going to cook",fr:'je vais cuisiner'}]}};
+  var GRAM=[["j'ai","visité","ma grand-mère","I visited my grandma"],["j'ai","travaillé","","I worked"],["j'ai","vu","un ami","I saw a friend"],["j'ai","cuisiné","","I cooked"]];
+  var GRAM_MORE=[["j'ai","mangé","une pomme","I ate an apple"],["j'ai","fini","mon travail","I finished my work"],["j'ai","parlé","français","I spoke French"]];
+  var REPLY = ['— Fine, thank you.','— Fine, thank you.','— Fine, thank you.','— [[Ça va]], thank you.','— [[Ça va bien]], [[merci]].','— [[Ça va bien]], [[merci]]. [[Et toi]] ?'];
+  var LEVEL_LABEL = ['English','English + a little French','French appears','More French than English','Almost all French','French'];
+  var JOKES = ['Start in English. Nothing is hidden yet.','Wait. I\'m supposed to be helping you speak French.','Okay… we\'re getting there.','I thought you were already fluent.','Almost. Say it out loud once.','Done. That is French, and you read it.'];
+
+  /* ---------- storage (always wrapped) ---------- */
+  var mem = {};
+  function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return k in mem?mem[k]:d}}
+  function save(k,v){mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+
+  var events = load('fr_events',null);
+  if(!events){
+    var n0=Date.now(),H=3600e3;
+    events=[[2,'bonjour'],[5,'bonjour'],[9,'bonsoir'],[15,'bonjour'],[22,'bonsoir'],[30,'bonjour']]
+      .map(function(a){return {expr:a[1],ts:n0-a[0]*H,source:'mission',sample:true}});
+    save('fr_events',events);
+  }
+
+  /* ---------- helpers ---------- */
+  var $=function(s){return document.querySelector(s)};
+  var demoTime='';
+  function clock(){var d=new Date();if(demoTime){var p=demoTime.split(':');d.setHours(+p[0],+p[1],0,0)}return d}
+  function pad(n){return (n<10?'0':'')+n}
+  function hhmm(d){return pad(d.getHours())+':'+pad(d.getMinutes())}
+  function say(text){try{var s=window.speechSynthesis;s.cancel();var u=new SpeechSynthesisUtterance(text);u.lang='fr-FR';u.rate=(typeof SET!=='undefined'&&SET.rate)||.85;
+    var v=(s.getVoices()||[]).filter(function(v){return v.lang&&v.lang.toLowerCase().indexOf('fr')===0})[0];if(v)u.voice=v;s.speak(u)}catch(e){}}
+  function ico(kind,size){size=size||40;
+    if(kind==='d')return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="8" fill="var(--sun)"/><g stroke="var(--sun)" stroke-width="3" stroke-linecap="round"><path d="M20 4v5M20 31v5M4 20h5M31 20h5M8.7 8.7l3.5 3.5M27.8 27.8l3.5 3.5M31.3 8.7l-3.5 3.5M12.2 27.8l-3.5 3.5"/></g></svg>';
+    var o={
+      yes:'<circle cx="20" cy="20" r="14" fill="var(--good)"/><path d="M13 20l5 5 9-10" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+      no:'<circle cx="20" cy="20" r="14" fill="var(--muted)"/><path d="M14 14l12 12M26 14L14 26" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>',
+      heart:'<path d="M20 34S5 25 5 14.5a7.5 7.5 0 0 1 15-2 7.5 7.5 0 0 1 15 2C35 25 20 34 20 34z" fill="var(--blue)"/>',
+      smile:'<circle cx="20" cy="20" r="14" fill="var(--sun)"/><circle cx="15" cy="17" r="2" fill="#11264b"/><circle cx="25" cy="17" r="2" fill="#11264b"/><path d="M13 24q7 7 14 0" stroke="#11264b" stroke-width="2.5" fill="none" stroke-linecap="round"/>'};
+    if(o[kind])return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 40 40" aria-hidden="true">'+o[kind]+'</svg>';
+    return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 40 40" aria-hidden="true"><path d="M26 6a14 14 0 1 0 8 25A12 12 0 0 1 26 6z" fill="var(--night)"/></svg>'}
+  var I={
+    home:'<path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/>',
+    lesson:'<path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4zM8 9h8M8 13h6"/>',
+    fran:'<path d="M4 5h16v11H9l-5 4z"/>',
+    mission:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>',
+    history:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    prog:'<path d="M3 20h18M6 20v-6M12 20V9M18 20V4"/>',
+    life:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    speaker:'<path d="M4 9v6h4l5 4V5L8 9z" fill="currentColor"/><path d="M16 8a5 5 0 0 1 0 8"/>',
+    play:'<path d="M8 5v14l11-7z" fill="#fff" stroke="none"/>'};
+  function svg(n,s){return '<svg width="'+(s||22)+'" height="'+(s||22)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+I[n]+'</svg>'}
+  function frTokens(s){return s.replace(/\[\[(.+?)\]\]/g,function(_,w){return '<button class="fr" data-say="'+w.replace(/"/g,'')+'">'+w+'</button>'})}
+  function plain(s){return s.replace(/\[\[|\]\]/g,'')}
+
+  /* ---------- context engine (section 6) ---------- */
+  function context(){
+    var d=clock(),h=d.getHours()+d.getMinutes()/60;
+    if(h>=18) return {expr:'bonsoir',note:'It is '+hhmm(d)+'. Bonsoir is the natural choice now.',quiet:false};
+    if(h>=16.5) return {expr:'bonjour',note:'It is '+hhmm(d)+'. Bonjour is still perfectly natural. Bonsoir arrives soon.',quiet:false};
+    if(h>=5) return {expr:'bonjour',note:'It is '+hhmm(d)+'. Bonjour fits right now.',quiet:false};
+    return {expr:'bonsoir',note:'It is '+hhmm(d)+'. Nobody expects a greeting at this hour. Bonsoir is ready for this evening.',quiet:true};
+  }
+
+  /* ---------- stats (section 20) ---------- */
+  function stats(){
+    var n=Date.now(),mid=new Date();mid.setHours(0,0,0,0);
+    var today=0,h24=0;
+    events.forEach(function(e){if(e.ts>=mid.getTime())today++;if(e.ts>=n-864e5)h24++});
+    return {today:today,h24:h24};
+  }
+  function addUse(expr,source){events.push({expr:expr,ts:Date.now(),source:source,sample:false});save('fr_events',events)}
+
+  /* ---------- state ---------- */
+  var cur='home',lessonExpr=null,level=0,sceneAnswer=null,histFilter='all',lifeDay='hier',lifePick=null,lifeStep=0,gramMore=false,famView=false,histAll=false,gramTopic='past',demoStage=0,autoEn=false;
+  var MISSION_SECS=60;
+  var mission={expr:'bonjour',left:MISSION_SECS,running:false,uses:0,timer:null};
+
+  function statRow(){var s=stats();
+    return '<div class="row"><div class="card stat"><span class="lbl">Today</span><span class="num">'+s.today+'</span><span class="tag">since midnight</span></div>'+
+      '<div class="card stat"><span class="lbl">Last 24 hours</span><span class="num">'+s.h24+'</span><span class="tag">rolling window</span></div></div>'}
+
+  /* ---------- screens ---------- */
+  function rHome(){
+    var c=context(),e=CONTENT[c.expr];
+    $('#s-home').innerHTML=
+      '<div class="top"><div><div class="logo">Franglais</div><div class="tag">'+(SET.name?'Salut, '+SET.name.replace(/</g,'')+'. ':'')+'Small steps. Real French.</div></div></div>'+
+      '<div class="hero '+(e.kind==='d'?'day':'night')+'"><div><div class="eyebrow">Right now</div><div class="word">'+e.fr+'</div><div class="ctx">'+c.note+'</div></div>'+ico(e.kind,56)+'</div>'+
+      '<div class="card stack"><div class="eyebrow">Today\'s mission</div><h2>Use '+e.fr+' in real life</h2><p class="tag">60 seconds. Minimum goal: 1 real use.</p>'+
+      '<button class="btn" data-start="'+c.expr+'">Start mission</button></div>'+
+      statRow()+
+      '<div class="row"><button class="btn ghost" data-open="'+c.expr+'">See the lesson</button><button class="btn ghost" data-go="fran">Try Franglais</button></div>'+'<button class="btn ghost" data-go="ctx">Context: weather</button>';
+  }
+
+  function rLesson(){
+    var id=lessonExpr||context().expr,e=CONTENT[id],p=pairOf(id),t=hhmm(clock()),sc;
+    if(p.id==='family'&&id!==null&&(lessonExpr===null||pairOf(lessonExpr).id==='family')&&famView)return rFamily();
+    $('#s-lesson').innerHTML=
+      '<div class="pairs">'+PAIRS.map(function(x){return '<button data-pair="'+x.id+'" aria-pressed="'+(x.id===p.id)+'">'+x.title+'</button>'}).join('')+'</div>'+
+      '<div class="top"><div><div class="eyebrow">Everyday life</div><h1 style="font-size:1.7rem">'+p.title+'</h1><div class="tag">'+p.sub+'</div></div></div>'+
+      '<div class="seg"><button data-open="'+p.a+'" aria-pressed="'+(id===p.a)+'">'+ico(CONTENT[p.a].kind,24)+CONTENT[p.a].fr+'</button><button data-open="'+p.b+'" aria-pressed="'+(id===p.b)+'">'+ico(CONTENT[p.b].kind,24)+CONTENT[p.b].fr+'</button></div>'+
+      '<div class="card stack"><div><span class="big">'+e.fr+'</span></div><div><span class="eyebrow">Say it like this</span><div class="pron" style="font-size:1.3rem">'+e.pron+'</div></div>'+
+      '<button class="play" data-say="'+e.fr+'"><span class="dot">'+svg('play',18)+'</span>Écouter en français</button></div>'+
+      '<div class="card stack"><div class="eyebrow">When to use it</div><p>'+e.when+'</p>'+
+      '<ul class="ex">'+e.examples.map(function(x){return '<li><b>'+x[0]+'</b><span>'+x[1]+'</span></li>'}).join('')+'</ul></div>'+
+      storyCard(p.id)+
+      '<button class="btn ghost" data-go="fran">Try it in Franglais</button>';
+  }
+
+  function lifeSeen(){return load('fr_life',{hier:0,aujourdhui:0,demain:0})}
+  /* My life, word by word: stem first, then each segment [English, French] left to right */
+  var STEM={hier:['Yesterday,','Hier,'],aujourdhui:['Today,',"Aujourd'hui,"],demain:['Tomorrow,','Demain,']};
+  var LS={
+    hier:[[['I',"j'ai"],['visited','rendu visite à'],['my','ma'],['grandma','grand-mère']],[['I',"j'ai"],['worked','travaillé']],[['I',"j'ai"],['saw','vu'],['a','un'],['friend','ami']],[['I',"j'ai"],['cooked','cuisiné']]],
+    aujourdhui:[[['I','je'],['stay','reste'],['home','à la maison']],[['I','je'],['work','travaille']],[['I','je'],['see','vois'],['my','ma'],['family','famille']],[['I','je'],['cook','cuisine']]],
+    demain:[[["I'm going to",'je vais'],['work','travailler']],[["I'm going to",'je vais'],['see','voir'],['a','un'],['friend','ami']],[["I'm going to",'je vais'],['rest','me reposer']],[["I'm going to",'je vais'],['cook','cuisiner']]]
+  };
+  function lifeSegs(){var st=STEM[lifeDay];return [[st[0],st[1]]].concat(LS[lifeDay][lifePick])}
+  function rLife(){
+    var L=LIFE[lifeDay],o=lifePick===null?null:L.opts[lifePick],card='';
+    if(o){
+      var segs=lifeSegs(),N=segs.length;lifeStep=Math.min(lifeStep,N);
+      var en=segs.map(function(s){return s[0]}).join(' ')+'.';
+      var line=segs.map(function(s,i){return i<lifeStep?'[['+s[1]+']]':s[0]}).join(' ')+'.';
+      var fr=segs.map(function(s){return s[1]}).join(' ')+'.';
+      var pct=Math.round(lifeStep/N*100);
+      card='<div class="card stack"><div class="bar" role="progressbar" aria-valuenow="'+pct+'" aria-valuemin="0" aria-valuemax="100"><i style="width:'+pct+'%"></i></div>'+
+        '<p class="sentence">'+frTokens(line)+'</p><p class="tag">'+en+'</p>'+
+        '<button class="play" data-say="'+fr.replace(/"/g,'')+'"><span class="dot">'+svg('play',18)+'</span>Listen to the French</button>'+
+        '<div class="row"><button class="btn ghost" data-lstep="-1"'+(lifeStep===0?' disabled style="opacity:.4"':'')+'>One word back</button><button class="btn" data-lstep="1"'+(lifeStep===N?' disabled style="opacity:.4"':'')+'>One more French word</button></div></div>';
+    }else card='<div class="card"><p class="tag">Pick one. Your sentence appears here, and you turn it into French one word at a time.</p></div>';
+    $('#s-life').innerHTML=
+      '<div class="top"><div><div class="eyebrow">My life in French</div><h1 style="font-size:1.7rem">Let\'s talk about your day</h1></div></div>'+
+      '<div class="seg">'+Object.keys(LIFE).map(function(k){return '<button data-day="'+k+'" aria-pressed="'+(k===lifeDay)+'" style="font-size:1rem">'+LIFE[k].label+'</button>'}).join('')+'</div>'+
+      '<div class="card stack"><p style="font-weight:700;font-size:1.15rem">'+L.q+'</p><p class="tag">'+frTokens('[['+L.qfr+']]')+'</p>'+
+      '<div class="eyebrow">Choose what fits your life</div><div class="opts">'+L.opts.map(function(x,i){return '<button data-lp="'+i+'" aria-pressed="'+(i===lifePick)+'">'+x.en+'</button>'}).join('')+'</div></div>'+
+      card+
+      (lifeDay==='hier'&&o?'<button class="btn ghost" data-pat="past">Why “j\'ai”? See the pattern</button>':'')+(lifeDay==='demain'&&o?'<button class="btn ghost" data-pat="future">Why “je vais”? See the pattern</button>':'');
+  }
+
+  var GTOPICS={
+    past:{chip:"j'ai + verb",title:"The past tense: j'ai + verb",key:'hier',stem:'Hier',rows:GRAM,more:GRAM_MORE,
+      why:'To talk about actions in the past, French often uses <b>j\'ai</b> followed by the <b>past participle</b> of the verb: <i>travailler</i> becomes <i>travaillé</i>.',
+      note:'Some verbs work differently. We meet those later, when you have used enough French to notice them.'},
+    future:{chip:'je vais + verb',title:'The near future: je vais + verb',key:'demain',stem:'Demain',
+      rows:[["je vais","travailler","","I'm going to work"],["je vais","voir","un ami","I'm going to see a friend"],["je vais","me reposer","","I'm going to rest"],["je vais","cuisiner","","I'm going to cook"]],
+      more:[["je vais","manger","une pizza","I'm going to eat a pizza"],["je vais","finir","mon travail","I'm going to finish my work"],["je vais","parler","français","I'm going to speak French"]],
+      why:'To say what you are going to do, French uses a form of <b>aller</b> (to go) followed by the verb in its <b>infinitive</b>. The second verb does not change: <i>je vais travailler</i>, just like English "I\'m going to work".',
+      note:'With other people the first part changes: <i>tu vas</i> (you are going to), <i>il va</i> (he is going to). We meet those later.'}};
+  function gramRow(r,stem){
+    var say=stem+', '+r[0]+' '+r[1]+(r[2]?' '+r[2]:'');
+    return '<button class="gr" data-say="'+say+'"><span class="aux">'+r[0]+'</span> <span class="pp">'+r[1]+'</span>'+(r[2]?' '+r[2]:'')+'<small>'+r[3]+'</small></button>';
+  }
+  function rGram(){
+    var T=GTOPICS[gramTopic],n=lifeSeen()[T.key]||0;
+    $('#s-gram').innerHTML=
+      '<div class="pairs">'+Object.keys(GTOPICS).map(function(k){return '<button data-gt="'+k+'" aria-pressed="'+(k===gramTopic)+'">'+GTOPICS[k].chip+'</button>'}).join('')+'</div>'+
+      '<div class="top"><div><div class="eyebrow">Grammar</div><h1 style="font-size:1.7rem">'+T.title+'</h1></div></div>'+
+      '<div class="reply'+(n>=3?'':' soft')+'">'+(n>=3?'You\'ve built '+n+' sentences with '+T.stem+'. Now the pattern will make sense.':'You\'ve built '+n+' sentence'+(n===1?'':'s')+' with '+T.stem+' so far. Build 3 in My life and this will click.')+'</div>'+
+      '<div class="card stack"><div class="eyebrow">What you have already used</div>'+T.rows.map(function(r){return gramRow(r,T.stem)}).join('')+
+        (gramMore?T.more.map(function(r){return gramRow(r,T.stem)}).join(''):'')+'</div>'+
+      '<div class="card stack"><div class="eyebrow">Why?</div><p>'+T.why+'</p><p class="tag">'+T.note+'</p></div>'+
+      '<button class="btn" data-more="1">'+(gramMore?'Show fewer examples':'See more examples')+'</button>';
+  }
+
+  /* Franglais word by word: each segment is [English, French, isKey]. Key segments turn French first, then left to right. */
+  var FL={
+    bonjour:[[['Good morning,','Bonjour,',1],['how','comment'],['are','ça'],['you?','va ?']],[['Fine,','Ça va bien,'],['thank you.','merci.'],['And','Et'],['you?','toi ?']]],
+    bonsoir:[[['Good evening,','Bonsoir,',1],['how','comment'],['are','ça'],['you?','va ?']],[['Fine,','Ça va bien,'],['thank you.','merci.'],['And','Et'],['you?','toi ?']]],
+    oui:[[['Do you','Tu'],['want','veux'],['a','un'],['coffee?','café ?']],[['Yes,','Oui,',1],['please.',"s'il vous plaît."],['Thank you!','Merci !']]],
+    non:[[['Do you','Tu'],['want','veux'],['more','encore'],['coffee?','du café ?']],[['No,','Non,',1],['thank you.','merci.'],["It's fine.","C'est bon."]]],
+    merci:[[['A stranger','Un inconnu'],['holds','tient'],['the door','la porte'],['for you.','pour vous.']],[['Thank you','Merci',1],['very much!','beaucoup !']]],
+    derien:[[['He says:','Il dit :'],['Thank you','« Merci'],['very much!"','beaucoup ! »']],[["You're welcome!",'De rien !',1],['Have a good day!','Bonne journée !']]],
+    aurevoir:[[['You','Vous'],['leave','quittez'],['the shop.','le magasin.']],[['Goodbye!','Au revoir !',1],['Have a good day!','Bonne journée !']]],
+    abientot:[[['You','Tu'],['will be back','reviens'],['tomorrow.','demain.']],[['See you soon!','À bientôt !',1],['See you tomorrow!','À demain !']]],
+    jour:[[['The sun','Le soleil'],['is up.','est levé.'],['It is','C\'est'],['daytime.','le jour.',1]],[['A good','Un bon'],['day!','jour !'],['Hello!','Bonjour !']]],
+    nuit:[[['It is dark.','Il fait noir.'],['It is','C\'est'],['nighttime.','la nuit.',1]],[['Good night!','Bonne nuit !',1],['Sleep well!','Dors bien !']]]
+  };
+  function franSegs(id){var f=FL[id],out=[];f.forEach(function(line,li){line.forEach(function(s,i){out.push({li:li,en:s[0],fr:s[1],key:!!s[2]})})});return out}
+  function franOrder(segs){var k=[],r=[];segs.forEach(function(s,i){(s.key?k:r).push(i)});return k.concat(r)}
+  function franId(){return lessonExpr||context().expr}
+  function rFran(){
+    var id=franId(),segs=franSegs(id),order=franOrder(segs),N=segs.length;level=Math.min(level,N);
+    var done={};order.slice(0,level).forEach(function(i){done[i]=1});
+    var lines=['',''],frAll=['',''];
+    segs.forEach(function(s,i){var t=done[i]?'[['+s.fr+']]':s.en;lines[s.li]+=(lines[s.li]?' ':'')+t;frAll[s.li]+=(frAll[s.li]?' ':'')+s.fr});
+    var pct=Math.round(level/N*100),lbl=level===0?'English':level===N?'French':level+' of '+N+' in French';
+    var ji=level===0?0:level===N?5:Math.min(4,1+Math.floor(level/N*4));
+    $('#s-fran').innerHTML=
+      '<div class="top"><div><div class="eyebrow">Franglais</div><h1 style="font-size:1.7rem">Let\'s try it together</h1></div></div>'+
+      '<div class="card stack"><div class="bar" role="progressbar" aria-valuenow="'+pct+'" aria-valuemin="0" aria-valuemax="100"><i style="width:'+pct+'%"></i></div>'+
+      '<div class="levels"><span>English</span><span>'+lbl+'</span><span>French</span></div></div>'+
+      '<div class="card stack"><div><p class="sentence">'+frTokens(lines[0])+'</p><p class="sentence">— '+frTokens(lines[1])+'</p></div>'+
+      '<p class="tag">Tap a French word to hear it.</p>'+
+      '<button class="play" data-say="'+frAll.join(' ').replace(/"/g,'')+'"><span class="dot">'+svg('play',18)+'</span>Listen to the French</button></div>'+
+      '<div class="reply soft">'+JOKES[ji]+'</div>'+
+      '<div class="row"><button class="btn ghost" data-lvl="-1"'+(level===0?' disabled style="opacity:.4"':'')+'>One word back</button><button class="btn" data-lvl="1"'+(level===N?' disabled style="opacity:.4"':'')+'>One more French word</button></div>'+
+      (level>=Math.ceil(N/2)?'<button class="btn ghost" data-start="'+id+'">Use it for real: start a mission</button>':'');
+  }
+
+  function fmt(s){return pad(Math.floor(s/60))+':'+pad(s%60)}
+  function rMission(){
+    var m=mission,e=CONTENT[m.expr],R=96,C=2*Math.PI*R,off=C*(1-m.left/MISSION_SECS);
+    $('#s-mission').innerHTML=
+      '<div class="top"><div><div class="eyebrow">Your mission</div><h1 style="font-size:1.6rem">Use '+e.fr+' for real</h1></div></div>'+
+      '<div class="card stack"><p>For the next 60 seconds, say <b>'+e.fr+'</b> whenever it is naturally appropriate.</p>'+
+      '<div class="ring"><svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="'+R+'" stroke="var(--blue-soft)"/><circle id="arc" cx="110" cy="110" r="'+R+'" stroke="var(--blue)" stroke-linecap="round" stroke-dasharray="'+C+'" stroke-dashoffset="'+off+'"/></svg><div class="t" id="tm">'+fmt(m.left)+'</div></div>'+
+      '<div class="center tag">Real uses this mission: <b id="mu" style="color:var(--ink)">'+m.uses+'</b></div>'+
+      '<button class="plus" data-plus="1">+1 &nbsp;I used it!</button>'+
+      '<div class="row"><button class="btn ghost" data-pause="1">'+(m.running?'Pause':'Resume')+'</button><button class="btn ghost" data-finish="1">Finish</button></div>'+
+      '<p class="center tag">Goal: 1 real use (minimum). Listening does not count.</p></div>';
+  }
+  function tick(){
+    var m=mission;if(!m.running)return;m.left--;
+    if(m.left<=0){m.left=0;finishMission();return}
+    var tm=$('#tm');if(tm)tm.textContent=fmt(m.left);
+    var a=$('#arc');if(a){var C=2*Math.PI*96;a.setAttribute('stroke-dashoffset',C*(1-m.left/MISSION_SECS))}
+  }
+  function startMission(id){
+    clearInterval(mission.timer);
+    mission={expr:id,left:MISSION_SECS,running:true,uses:0,timer:setInterval(tick,1000)};
+    go('mission');
+  }
+  function finishMission(){clearInterval(mission.timer);mission.running=false;go('result')}
+
+  function rResult(){
+    var m=mission,e=CONTENT[m.expr],ok=m.uses>=1;
+    $('#s-result').innerHTML=
+      '<div class="card stack center"><div style="display:flex;justify-content:center">'+ico(e.kind,64)+'</div>'+
+      '<h1 style="font-size:2rem">'+(ok?'Great job!':'Not this time')+'</h1>'+
+      '<p>'+(ok?'You used <b>'+e.fr+'</b> '+m.uses+(m.uses===1?' time':' times')+'!':'No real use during this mission. One is all it takes. Try again when it comes up.')+'</p></div>'+
+      statRow()+
+      '<div class="reply '+(ok?'':'soft')+'">'+(ok?'You\'re making real progress. Keep going.':'Goal: 1 real use. The next person you greet counts.')+'</div>'+
+      '<button class="btn" data-go="home">Back to home</button>';
+  }
+
+  /* ---------- more pairs (section 32) ---------- */
+  function ex(fr,pron,en,kind,when,examples){return {fr:fr,pron:pron,en:en,kind:kind,when:when,examples:examples}}
+  CONTENT.veux=ex('Je veux','zhuh vuh','I want','yes','French people say Oui first, then Je veux. To keep it short, just say Oui, merci. For a softer, polite request, Je voudrais comes later.',[['Oui, je veux un café.','Yes, I want a coffee.'],['Oui, merci.','Yes, thanks.']]);
+  CONTENT.neveuxpas=ex('Je ne veux pas','zhuh nuh vuh pah',"I don't want",'no','French people say Non first, then Je ne veux pas. To keep it short, just say Non, merci. Ne … pas wraps around the verb.',[['Non, je ne veux pas de café.',"No, I don't want coffee."],['Non, merci.','No, thanks.']]);
+  CONTENT.comprends=ex('Je comprends','zhuh kohn-PRAHN','I understand','yes','Je comprends when you follow what someone says. It shows you are with them.',[['Oui, je comprends.','Yes, I understand.'],['Je comprends un peu.','I understand a little.']]);
+  CONTENT.necomprendspas=ex('Je ne comprends pas','zhuh nuh kohn-prahn PAH',"I don't understand",'no','Je ne comprends pas when you are lost. It is the most useful sentence for a beginner: people slow down.',[['Je ne comprends pas.',"I don't understand."],['Pardon, je ne comprends pas.',"Sorry, I don't understand."]]);
+  CONTENT.ici=ex('Ici','ee-SEE','Here','heart','Ici for something close to you.',[['Je suis ici.','I am here.'],["Ici, s'il vous plaît.",'Here, please.']]);
+  CONTENT.labas=ex('Là-bas','lah-BAH','Over there','smile','Là-bas for something further away.',[['Le café est là-bas.','The café is over there.'],['Je vais là-bas.','I am going over there.']]);
+  PAIRS.push({id:'want',a:'veux',b:'neveuxpas',title:'Je veux / Je ne veux pas',sub:"I want / I don't want"});
+  PAIRS.push({id:'understand',a:'comprends',b:'necomprendspas',title:'Je comprends / Je ne comprends pas',sub:"I understand / I don't understand"});
+  PAIRS.push({id:'place',a:'ici',b:'labas',title:'Ici / Là-bas',sub:'Here / Over there'});
+  FL.veux=[[['Do you want','Tu veux'],['a coffee?','un café ?']],[['Yes,','Oui,'],['I want','je veux',1],['a coffee,','un café,'],['please.',"s'il vous plaît."]]];
+  FL.neveuxpas=[[['More coffee?','Encore du café ?']],[['No,','Non,'],["I don't want",'je ne veux pas',1],['any more,','de café,'],['thank you.','merci.']]];
+  FL.comprends=[[['Do you','Tu'],['understand?','comprends ?']],[['Yes,','Oui,'],['I understand','je comprends',1],['a little.','un peu.']]];
+  FL.necomprendspas=[[['The man speaks very fast.',"L'homme parle très vite."]],[['Sorry,','Pardon,'],["I don't understand.",'je ne comprends pas.',1],['Slowly, please.',"Lentement, s'il vous plaît."]]];
+  FL.ici=[[['Where is','Où est'],['the café?','le café ?']],[['It is',"C'est"],['here.','ici.',1]]];
+  FL.labas=[[['Where is','Où est'],['the bus stop?',"l'arrêt de bus ?"]],[['It is',"C'est"],['over there.','là-bas.',1]]];
+
+  /* ---------- context screen (screen 13) ---------- */
+  var ctxWx='rain',ctxLevel=0;
+  var CTX={
+    rain:{label:'Rain',situ:[["It's raining.",'Il pleut.',1]],ans:[['Today,',"Aujourd'hui,"],['I','je'],['stay','reste'],['home.','à la maison.']],hint:"In THIS weather? You might want to stay inside.",joke:'Staying home is the right call.'},
+    sun:{label:'Sun',situ:[["It's sunny.",'Il fait beau.',1]],ans:[['Today,',"Aujourd'hui,"],['I','je'],['go out.','sors.']],hint:'Beautiful day. Staying in would be a crime.',joke:'Sunglasses are not a French word, but you need them.'},
+    cold:{label:'Cold',situ:[["It's cold.",'Il fait froid.',1]],ans:[['Today,',"Aujourd'hui,"],['I','je'],['wear','mets'],['a coat.','un manteau.']],hint:'Coat time. Shivering impresses nobody.',joke:'Scarf optional, French style is not.'},
+    hot:{label:'Hot',situ:[["It's hot.",'Il fait chaud.',1]],ans:[['Today,',"Aujourd'hui,"],['I','je'],['drink','bois'],['water.',"de l'eau."]],hint:'Water first, French second.',joke:'Hydrated and speaking French. Nice.'}
+  };
+  function rCtx(){
+    var C=CTX[ctxWx],segs=[],lines=[[],[]];
+    C.situ.forEach(function(s){segs.push({li:0,en:s[0],fr:s[1],key:!!s[2]})});
+    C.ans.forEach(function(s){segs.push({li:1,en:s[0],fr:s[1],key:false})});
+    var order=franOrder(segs),N=segs.length;ctxLevel=Math.min(ctxLevel,N);
+    var done={};order.slice(0,ctxLevel).forEach(function(i){done[i]=1});
+    var L=['',''],F=['',''];
+    segs.forEach(function(s,i){L[s.li]+=(L[s.li]?' ':'')+(done[i]?'[['+s.fr+']]':s.en);F[s.li]+=(F[s.li]?' ':'')+s.fr});
+    var pct=Math.round(ctxLevel/N*100);
+    $('#s-ctx').innerHTML=
+      '<div class="top"><div><div class="eyebrow">Context</div><h1 style="font-size:1.7rem">What fits right now?</h1><div class="tag">It is '+hhmm(clock())+'. Weather is chosen by you in this demo.</div></div></div>'+
+      '<div class="seg">'+Object.keys(CTX).map(function(k){return '<button data-wx="'+k+'" aria-pressed="'+(k===ctxWx)+'" style="font-size:1rem">'+CTX[k].label+'</button>'}).join('')+'</div>'+
+      '<div class="card stack"><div class="eyebrow">Today</div><p style="font-weight:700;font-size:1.15rem">What are you doing today?</p><p class="tag">'+C.hint+'</p></div>'+
+      '<div class="card stack"><div class="bar" role="progressbar" aria-valuenow="'+pct+'" aria-valuemin="0" aria-valuemax="100"><i style="width:'+pct+'%"></i></div>'+
+      '<p class="sentence">'+frTokens(L[0])+'</p><p class="sentence">'+frTokens(L[1])+'</p><p class="tag">Tap a French word to hear it.</p>'+
+      '<button class="play" data-say="'+F.join(' ').replace(/"/g,'')+'"><span class="dot">'+svg('play',18)+'</span>Listen to the French</button></div>'+
+      '<div class="reply soft">'+C.joke+'</div>'+
+      '<div class="row"><button class="btn ghost" data-cl="-1"'+(ctxLevel===0?' disabled style="opacity:.4"':'')+'>One word back</button><button class="btn" data-cl="1"'+(ctxLevel===N?' disabled style="opacity:.4"':'')+'>One more French word</button></div>';
+  }
+
+  /* ---------- family (add or remove members here) ---------- */
+  var FAMILY=[
+    ['maman','Maman','ma-MAHN','Mum','Maman for your mother, at any age. Warm and informal.'],
+    ['papa','Papa','pa-PAH','Dad','Papa for your father. Same warmth as maman.'],
+    ['tata','Tata','ta-TAH','Aunt','Tata for an aunt. Informal and affectionate, used in families.'],
+    ['tonton','Tonton','tohn-TOHN','Uncle','Tonton for an uncle. Informal and playful, used in families.'],
+    ['mamie','Mamie','ma-MEE','Grandma','Mamie for a grandmother. Softer than grand-mère.'],
+    ['papi','Papi','pa-PEE','Grandpa','Papi for a grandfather. Softer than grand-père. Also written papy.']];
+  FAMILY.forEach(function(f){
+    CONTENT[f[0]]=ex(f[1],f[2],f[3],'heart',f[4],[['Bonjour, '+f[0]+' !','Hello, '+f[3].toLowerCase()+'!'],['Je t\'aime, '+f[0]+'.','I love you, '+f[3].toLowerCase()+'.']]);
+    FL[f[0]]=[[['Hello,','Bonjour,'],[f[3]+'!',f[0]+' !',1]],[['I love you,',"Je t'aime,"],[f[3].toLowerCase()+'.',f[0]+'.']]];
+  });
+  PAIRS.push({id:'family',a:'maman',b:'papa',title:'Ma famille',sub:'My family',members:FAMILY.map(function(f){return f[0]})});
+  function rFamily(){
+    $('#s-lesson').innerHTML=
+      '<div class="pairs">'+PAIRS.map(function(x){return '<button data-pair="'+x.id+'" aria-pressed="'+(x.id==='family')+'">'+x.title+'</button>'}).join('')+'</div>'+
+      '<div class="top"><div><div class="eyebrow">People you love</div><h1 style="font-size:1.7rem">Ma famille</h1><div class="tag">My family. Tap to hear each word.</div></div></div>'+
+      FAMILY.map(function(f){
+        return '<div class="card stack"><div class="row" style="align-items:center"><div><div class="big" style="font-size:2rem">'+f[1]+'</div><div class="pron">'+f[2]+'</div><div class="tag">'+f[3]+'</div></div>'+
+          '<button class="play" data-say="'+f[1]+'" style="flex:none;width:auto"><span class="dot">'+svg('play',18)+'</span></button></div>'+
+          '<p class="tag"><b>When to use it:</b> '+f[4]+'</p>'+
+          '<div class="row"><button class="btn ghost small" data-fr="'+f[0]+'">Franglais</button><button class="btn small" data-start="'+f[0]+'">Use it for real</button></div></div>';
+      }).join('')+storyCard('family');
+  }
+
+  /* ---------- Madame / Monsieur ---------- */
+  CONTENT.madame=ex('Madame','ma-DAHM','Madam / Mrs','smile','Madame for a woman you do not know well, or someone older. Add it after Bonjour or Merci.',[['Bonjour, madame !','Hello, madam!'],['Merci, madame.','Thank you, madam.']]);
+  CONTENT.monsieur=ex('Monsieur','muh-SYUH','Sir / Mr','heart','Monsieur for a man you do not know well, or someone older. Add it after Bonjour or Merci.',[['Bonjour, monsieur !','Hello, sir!'],['Merci, monsieur.','Thank you, sir.']]);
+  FL.madame=[[['Hello,','Bonjour,'],['madam!','madame !',1]],[['Thank you,','Merci,'],['madam.','madame.']]];
+  FL.monsieur=[[['Hello,','Bonjour,'],['sir!','monsieur !',1]],[['Thank you,','Merci,'],['sir.','monsieur.']]];
+  PAIRS.push({id:'polite',a:'madame',b:'monsieur',title:'Madame / Monsieur',sub:'Madam / Sir'});
+
+  /* ---------- stories: "Try it in a scene" (first option of each step is the right one) ---------- */
+  function st(who,fr,en,opts,narr){return {who:who,fr:fr,en:en,opts:opts,narr:narr||''}}
+  var STORIES={
+    greet_morning:{title:"Mamie's doorstep",setup:"You arrive at Mamie's house early in the morning. You have not seen her for a year.",steps:[
+      st('Mamie',"Oh ! C'est toi !","Oh! It's you!",[["Bonjour, mamie !","Mamie's eyes fill up. Perfect Bonjour."],["Bonsoir, mamie !","It is morning. Mamie smiles: it is still Bonjour."]]),
+      st('Mamie',"Entre, entre ! Il y a du café.","Come in, come in! There is coffee.",[["Merci, mamie !","She pinches your cheek."],["De rien, mamie !","She invited you, so you thank her: Merci."]]),
+      st('Madame Roche',"Bonjour !","Hello!",[["Bonjour, madame !","Polite and warm."],["Bonjour, monsieur !","Madame Roche is a woman: madame."]],"Madame Roche, her neighbour, walks past.")],
+      end:"Mamie hugs you for a long time. A year apart, gone in one Bonjour."},
+    greet_evening:{title:"Papa's dinner table",setup:"It is evening. You arrive at Papa's door after a long trip.",steps:[
+      st('Papa',"Te voilà enfin !","There you are at last!",[["Bonsoir, papa !","It is evening: Bonsoir. Papa opens his arms."],["Bonjour, papa !","Bonjour works until about 6 pm. Now it is Bonsoir."]]),
+      st('Maman',"Tu as faim ?","Are you hungry?",[["Oui, maman !","The soup is already poured."],["Non, maman !","The table is full and Maman looks sad. Try Oui."]],"Maman looks up from the kitchen. The table is full."),
+      st('Monsieur Dupont',"Bonsoir !","Good evening!",[["Bonsoir, monsieur !","Exactly right."],["Bonsoir, madame !","Monsieur Dupont is a man: monsieur."]],"Monsieur Dupont, the neighbour, waves from the hallway.")],
+      end:"Papa's table, Maman's soup. After the long trip, you are home."},
+    yesno:{title:"Papi's recipe",setup:"Papi wants to teach you his famous cake. He has made it for fifty years.",steps:[
+      st('Papi',"Tu veux apprendre ma recette ?","Do you want to learn my recipe?",[["Oui, papi !","Papi's face lights up."],["Non, papi !","He made it for you and his smile drops. Try Oui."]]),
+      st('Papi',"Encore un morceau ?","Another slice?",[["Non, merci, papi !","Polite and honest. Papi laughs."],["Oui, papi !","You are full, but Papi is delighted anyway."]],"The cake is out of the oven. You already ate two slices. You are full."),
+      st('Papi',"Tu reviens dimanche ?","Will you come back on Sunday?",[["Oui, papi !","He claps his hands."],["Non, papi !","Papi would be so sad. Try Oui."]])],
+      end:"Papi writes the recipe on a card and slips it into your pocket. \"Pour toi.\" Some gifts last longer than cake."},
+    thanks:{title:"Madame Lambert's bag",setup:"On the bus, Madame Lambert drops her bag. You pick it up.",steps:[
+      st('Madame Lambert',"Oh, merci beaucoup !","Oh, thank you so much!",[["De rien, madame !","You say it with a smile."],["Merci, madame !","She is thanking you. The answer is De rien."]]),
+      st('Madame Lambert',"Tenez, un chocolat pour vous.","Here, a chocolate for you.",[["Merci, madame !","Now you get to say thanks."],["De rien, madame !","She is giving you something: you say Merci."]]),
+      st('Monsieur Lambert',"Merci d'avoir aidé ma mère !","Thank you for helping my mother!",[["De rien, monsieur !","Kindness passed along."],["Merci, monsieur !","He is thanking you: De rien."]],"At her stop, her son comes to meet her.")],
+      end:"Madame Lambert waves from the window as the bus pulls away. One small kindness, one big smile."},
+    bye:{title:"Leaving Mamie's",setup:"The summer holiday is over. You are leaving Mamie's house for the station.",steps:[
+      st('Mamie',"Tu reviens à Noël ?","Will you come back at Christmas?",[["À bientôt, mamie !","You will see her soon. À bientôt is perfect."],["Au revoir, mamie !","Au revoir sounds final. You will be back at Christmas: À bientôt."]]),
+      st('Monsieur',"Bon voyage !","Have a good trip!",[["Au revoir, monsieur !","You will not meet him again, so Au revoir fits."],["À bientôt, monsieur !","You will probably not see him again: Au revoir."]],"At the station, the conductor checks your ticket."),
+      st('Tata',"On se voit bientôt ?","Will we see each other soon?",[["À bientôt, tata !","Tata blows you a kiss through the phone."],["Au revoir, tata !","You will see her soon: À bientôt."]],"Your phone rings. It is Tata, far away.")],
+      end:"The train leaves. Mamie's scarf waves until it is a tiny dot, and you smile through it."},
+    daynight:{title:"The first night away",setup:"Your little cousin sleeps over for the first time. He cannot sleep.",steps:[
+      st('Cousin',"Il fait noir. C'est le jour ?","It is dark. Is it day?",[["Non, c'est la nuit !","Night, and a good time to sleep."],["Oui, c'est le jour !","It is dark outside: that is la nuit."]],"The room is dark and he is whispering."),
+      st('Tonton',"Allez, au lit, les enfants !","Come on, bedtime, kids!",[["Bonne nuit, tonton !","Tonton tucks you both in."],["Bonjour, tonton !","Bonjour is hello. At bedtime: Bonne nuit."]]),
+      st('Cousin',"C'est déjà le jour ?","Is it day already?",[["Oui, c'est le jour !","Sunlight on the blanket."],["Non, c'est la nuit !","The sun is up: that is le jour."]],"The sun rises. Your cousin wakes up smiling.")],
+      end:"Your cousin hugs his teddy. His first night away from home, and it ended with sunshine."},
+    want:{title:"Christmas market with Tata",setup:"It is freezing. Tata takes you to the Christmas market.",steps:[
+      st('Tata',"Tu veux un chocolat chaud ?","Do you want a hot chocolate?",[["Oui, je veux un chocolat chaud, tata !","Warm hands, warm heart. Oui first, then Je veux."],["Non, je ne veux pas, tata !","It is freezing. Hot chocolate is the right answer: Oui, je veux."]]),
+      st('The stallholder',"Un bonnet ? Pas cher !","A hat? Not expensive!",[["Non, merci, monsieur.","Short and polite. This is how it is said every day."],["Oui, merci, monsieur.","You already have a hat: Non, merci."]],"You already wear your favourite hat."),
+      st('Tata',"Tu veux des marrons chauds ?","Do you want hot chestnuts?",[["Non, je ne veux pas de marrons, tata.","Clear and kind. Non first, then Je ne veux pas."],["Oui, je veux des marrons, tata.","You do not like chestnuts: Non, je ne veux pas."]],"You do not like chestnuts."),
+      st('Tata',"Tu veux voir le manège ?","Do you want to see the carousel?",[["Oui, merci !","Lights, music, Tata's laugh. Short is perfect."],["Non, merci !","A carousel with lights! Try Oui, merci."]])],
+      end:"Hot chocolate, lights, Tata laughing next to you. Best afternoon of the year."},
+    understand:{title:"Papi on the phone",setup:"Papi calls and tells you a story. He speaks very fast.",steps:[
+      st('Papi',"Alors, ce matin, un grand chien dans le jardin !","So, this morning, a big dog in the garden!",[["Je ne comprends pas, papi.","Honest, and Papi slows down."],["Je comprends, papi.","If you say yes, he keeps going at full speed. Try Je ne comprends pas."]]),
+      st('Papi',"Un… grand… chien… dans… le… jardin.","A… big… dog… in… the… garden.",[["Ah, je comprends, papi !","Now it clicks."],["Je ne comprends pas, papi.","He is slow and clear now. Try Je comprends."]],"Papi slows down."),
+      st('Mamie',"Tu comprends le français ?","Do you understand French?",[["Je comprends un peu, mamie.","An honest answer."],["Je ne comprends pas, mamie.","You just understood Papi! Try Je comprends un peu."]],"Mamie takes the phone.")],
+      end:"A very big dog, a garden, and two grandparents proud of you. You understood."},
+    place:{title:"Lost in the market",setup:"You lost sight of Maman in a busy market.",steps:[
+      st('The stallholder',"Vous cherchez quelqu'un ?","Are you looking for someone?",[["Maman est là-bas, monsieur !","Pointing helps too."],["Maman est ici, monsieur !","She is across the square: là-bas."]],"You spot Maman waving across the square."),
+      st('Maman',"Tu es où ?","Where are you?",[["Je suis ici, maman !","She hears you."],["Je suis là-bas, maman !","You are right here: ici."]]),
+      st('Papa',"Où est le gâteau ?","Where is the cake?",[["Le gâteau est ici, papa !","Right in your hands."],["Le gâteau est là-bas, papa !","It is right here with you: ici."]],"Papa asks about the cake you are holding.")],
+      end:"Maman runs across the square and hugs you. You are no longer lost."},
+    polite:{title:"First day at school",setup:"It is your first day at a new school. Everyone is a stranger.",steps:[
+      st('Madame Petit',"Bonjour ! Bienvenue !","Hello! Welcome!",[["Bonjour, madame !","A great first impression."],["Bonjour, monsieur !","Madame Petit is a woman: madame."]]),
+      st('Monsieur Girard',"Bienvenue à l'école !","Welcome to school!",[["Merci, monsieur !","Respectful and warm."],["De rien, monsieur !","He welcomed you: you say Merci."]],"The headmaster shakes your hand."),
+      st('Madame Petit',"Tu comprends ?","Do you understand?",[["Oui, madame !","Confidence."],["Non, madame !","You did follow! Try Oui."]],"You have followed everything so far.")],
+      end:"By afternoon you know three new faces and a few new words. Politeness opens doors."},
+    family:{title:"Sunday at Mamie's",setup:"Sunday lunch at Mamie's. The whole family is coming.",steps:[
+      st('Mamie',"Ah, te voilà !","Ah, there you are!",[["Bonjour, mamie !","Mamie opens her arms."],["Bonjour, papi !","That is Mamie, grandma. Papi is grandpa."]]),
+      st('Papi',"Viens, assieds-toi à côté de moi.","Come, sit next to me.",[["Merci, papi !","Papi pats the seat."],["Au revoir, papi !","You just arrived: Merci."]],"Papi pulls out the chair next to his."),
+      st('Tonton',"Alors, tu parles français maintenant ?","So, you speak French now?",[["Oui, tonton, un peu !","Tonton cheers."],["Non, tonton !","You are speaking it right now! Try Oui."]],"Tonton arrives and teases you."),
+      st('Maman',"À la famille !","To the family!",[["À la famille !","Glasses clink."],["Au revoir, la famille !","Nobody is leaving yet! Echo the toast."]],"Maman raises a glass.")],
+      end:"Mamie cries a little, smiling. Papi squeezes your hand. Everyone is here, and you said every word in French."}
+  };
+  function storyFor(pid){return pid==='greet'?STORIES[context().expr==='bonsoir'?'greet_evening':'greet_morning']:STORIES[pid]}
+  var story={key:'',step:0,pick:null,score:0};
+  function storyCard(pid){
+    var S=storyFor(pid);if(!S)return '';
+    var key=pid+(pid==='greet'?context().expr:'');
+    if(story.key!==key)story={key:key,step:0,pick:null,score:0};
+    var N=S.steps.length,dots='<div class="sdots">'+S.steps.map(function(_,i){return '<i class="'+(i<story.step?'d':i===story.step?'n':'')+'"></i>'}).join('')+'</div>';
+    if(story.step>=N){
+      var mid=pairOf(pid==='family'?'maman':pid==='greet'?context().expr:PAIRS.filter(function(x){return x.id===pid})[0].a);
+      return '<div class="card stack"><div class="eyebrow">Try it in a scene</div><h2>'+S.title+'</h2>'+dots+'<div class="reply">'+S.end+'</div><p class="tag">You chose well '+story.score+' of '+N+' times.</p>'+
+        '<div class="row"><button class="btn ghost" data-sr="1">Play again</button><button class="btn" data-start="'+(pid==='greet'?context().expr:PAIRS.filter(function(x){return x.id===pid})[0].a)+'">Use it for real</button></div></div>';
+    }
+    var s=S.steps[story.step],order=s.opts.map(function(_,i){return i});if(story.step%2===0)order.reverse();
+    var picked=story.pick!==null;
+    return '<div class="card stack"><div class="eyebrow">Try it in a scene</div><h2>'+S.title+'</h2>'+dots+
+      (story.step===0?'<p class="tag">'+S.setup+'</p>':'')+(s.narr?'<p class="tag">'+s.narr+'</p>':'')+
+      '<div class="who">'+s.who+'</div><div class="say-bubble">'+frTokens('[['+s.fr.replace(/"/g,'')+']]')+'<div class="tag" style="font-weight:600">'+s.en+'</div></div>'+
+      '<div class="eyebrow">What do you say?</div>'+
+      '<div class="choices">'+order.map(function(i){var o=s.opts[i],cls=picked?(i===0?' ok':(i===story.pick?' bad':'')):'';
+        return '<button data-sp="'+i+'" class="'+cls.trim()+'"'+(picked?' disabled':'')+'>'+o[0]+'</button>'}).join('')+'</div>'+
+      (picked?'<div class="reply '+(story.pick===0?'':'soft')+'">'+s.opts[story.pick][1]+'</div><button class="btn" data-sn="1">'+(story.step===N-1?'Finish the story':'Next')+'</button>':'')+'</div>';
+  }
+
+  /* ---------- progression (sections 22-26) ---------- */
+  var STAGES=['Beginner','Franglais','Français en action','Français autonome'];
+  function exprState(id){
+    var ev=events.filter(function(e){return e.expr===id}),n=ev.length;
+    if(!n)return ['NEW','New'];
+    var last=Math.max.apply(null,ev.map(function(e){return e.ts}));
+    if(last<Date.now()-2*864e5)return ['NEEDS_REACTIVATION','Needs reactivation'];
+    if(n>=15)return ['MASTERED','Mastered'];
+    if(n>=5)return ['ACTIVE','Active'];
+    return ['ACQUISITION','Learning'];
+  }
+  function progress(){
+    var days={},active={},ctx={},wk=Date.now()-7*864e5;
+    events.forEach(function(e){days[new Date(e.ts).toDateString()]=1;if(e.ts>=wk)active[e.expr]=1;var p=pairOf(e.expr);if(p)ctx[p.id]=1});
+    var c=[['Days with real use',Object.keys(days).length,20],['Real uses',events.length,100],['Active expressions',Object.keys(active).length,3],['Contexts used',Object.keys(ctx).length,3]];
+    var ok=c.every(function(x){return x[1]>=x[2]});
+    return {rows:c,ok:ok};
+  }
+  function stageNow(){var P=progress();var s=events.length?1:0;if(P.ok)s=2;return Math.max(s,demoStage)}
+  var DEM=[["Qu'est-ce que tu vas faire demain ?","What are you going to do tomorrow?"],["Tu vas travailler ou rester à la maison ?","Are you going to work or stay home?"]];
+  function rProg(){
+    var P=progress(),st=stageNow(),hasSample=events.some(function(e){return e.sample});
+    var journey='<div class="journey">'+STAGES.map(function(n,i){return '<div class="jn'+(i<st?' done':'')+(i===st?' now':'')+'"><span class="jd">'+(i<st?'✓':'')+'</span><span class="jl">'+n+'</span></div>'}).join('')+'</div>';
+    var pct=Math.round(P.rows.reduce(function(a,x){return a+Math.min(1,x[1]/x[2])},0)/P.rows.length*100);
+    var crit=P.rows.map(function(x){return '<div class="crit"><span>'+x[0]+'</span><b>'+x[1]+' / '+x[2]+'</b><div class="bar"><i style="width:'+Math.min(100,Math.round(x[1]/x[2]*100))+'%"></i></div></div>'}).join('');
+    var exprs=Object.keys(CONTENT).map(function(k){var s=exprState(k),c=CONTENT[k];
+      return '<div class="it"><div class="ic o">'+ico(c.kind,24)+'</div><div class="nm">'+c.fr+'<small>'+events.filter(function(e){return e.expr===k}).length+' real uses</small></div><span class="pill s-'+s[0]+'">'+s[1]+'</span></div>'}).join('');
+    var stageCard='';
+    if(st===2){
+      stageCard='<div class="card stack"><div class="eyebrow">Français en action</div><p class="sentence">'+frTokens('[['+DEM[0][0]+']]')+'</p><p class="tag"><i>'+DEM[0][1]+'</i></p>'+
+        '<p class="sentence">'+frTokens('[['+DEM[1][0]+']]')+'</p><button class="play" data-say="'+DEM[0][0]+' '+DEM[1][0]+'"><span class="dot">'+svg('play',18)+'</span>Écouter</button>'+
+        '<div class="reply soft">English is now just a helping hand.</div></div>';
+    }else if(st===3){
+      stageCard='<div class="card stack center"><div class="eyebrow">Français autonome</div><h2>Vous pouvez maintenant interagir en français !</h2>'+
+        '<button class="btn ghost" data-say="Vous pouvez maintenant interagir en français !">Écouter</button>'+
+        '<p class="tag" id="enHelp">'+(autoEn?'You can now interact mainly in French! English is still here when you need it.':'')+'</p>'+
+        '<button class="btn ghost small" data-en="1">'+(autoEn?'Masquer l\'anglais':'Show English')+'</button></div>';
+    }
+    $('#s-prog').innerHTML=
+      '<div class="top"><div><div class="eyebrow">Your level</div><h1 style="font-size:1.7rem">'+STAGES[st]+'</h1></div></div>'+
+      '<div class="card stack">'+journey+'</div>'+
+      stageCard+
+      '<div class="card stack"><div class="eyebrow">Toward Français en action</div>'+
+        '<div class="bar"><i style="width:'+pct+'%"></i></div><p class="tag">'+pct+'% of the starting criteria. These numbers are starting values to test, not fixed rules.</p>'+crit+
+        (hasSample?'<p class="tag">Includes example uses until you clear them in History.</p>':'')+'</div>'+
+      '<div class="card"><div class="eyebrow" style="margin-bottom:6px">Your expressions</div><div class="hist">'+exprs+'</div></div>'+
+      '<div class="row"><button class="btn ghost" data-stage="1">Preview next stage (demo)</button><button class="btn ghost" data-go="set">Settings</button></div>';
+  }
+
+  function mk(o){var a=o.pre,b=o.pre2||o.pre;return {fr:o.fr,pron:o.pron,en:o.en,kind:o.kind,when:o.when,examples:o.examples,
+    sentence:[a[0],a[1],a[2],a[2],a[3],a[3]],reply:o.reply,listen:o.listen}}
+  CONTENT.aurevoir=mk({fr:'Au revoir',pron:'oh ruh-VWAHR',en:'Goodbye',kind:'smile',when:'Au revoir when you leave and may not see the person again soon.',
+    examples:[['Au revoir, madame !','Goodbye, madam!'],['Au revoir et merci !','Goodbye and thank you!']],
+    pre:['You leave the shop.','You leave the shop.','You [[quittez le magasin]].','Vous quittez le magasin.'],
+    reply:['— Goodbye!','— [[Au revoir]] !','— [[Au revoir]] !','— [[Au revoir]] !','— [[Au revoir]] !','— [[Au revoir]], [[bonne journée]] !'],listen:'Au revoir, bonne journée !'});
+  CONTENT.abientot=mk({fr:'À bientôt',pron:'ah byan-TOH',en:'See you soon',kind:'heart',when:'À bientôt when you expect to see the person again soon.',
+    examples:[['À bientôt !','See you soon!'],['Merci, à bientôt !','Thanks, see you soon!']],
+    pre:['You will be back tomorrow.','You will be back tomorrow.','You [[reviens demain]].','Tu reviens demain.'],
+    reply:['— See you soon!','— [[À bientôt]] !','— [[À bientôt]] !','— [[À bientôt]] !','— [[À bientôt]] !','— [[À bientôt]], [[à demain]] !'],listen:'À bientôt, à demain !'});
+  CONTENT.jour=mk({fr:'Jour',pron:'zhoor',en:'Day',kind:'d',when:'Jour is the daytime. Bonjour literally means "good day".',
+    examples:[['Un bon jour.','A good day.'],['Tous les jours.','Every day.']],
+    pre:['The sun is up. It is daytime.','The sun is up. It is [[le jour]].','Le soleil est levé. [[C\'est le jour]].',"Le soleil est levé. C'est le jour."],
+    reply:['— A good day!','— A good [[jour]] !','— Un bon [[jour]] !','— Un bon [[jour]] !','— Un bon [[jour]] !','— Un bon [[jour]] ! [[Bonjour]] !'],listen:'Un bon jour ! Bonjour !'});
+  CONTENT.nuit=mk({fr:'Nuit',pron:'nwee',en:'Night',kind:'n',when:'Nuit is the night. Bonne nuit says good night before sleep.',
+    examples:[['Bonne nuit !','Good night!'],['Cette nuit, je dors bien.','Tonight, I sleep well.']],
+    pre:['It is dark. It is nighttime.','It is dark. It is [[la nuit]].','Il fait noir. [[C\'est la nuit]].',"Il fait noir. C'est la nuit."],
+    reply:['— Good night!','— Good [[nuit]] !','— [[Bonne nuit]] !','— [[Bonne nuit]] !','— [[Bonne nuit]] !','— [[Bonne nuit]] ! [[Dors bien]] !'],listen:'Bonne nuit ! Dors bien !'});
+  PAIRS.push({id:'bye',a:'aurevoir',b:'abientot',title:'Au revoir / À bientôt',sub:'Goodbye / See you soon'});
+  PAIRS.push({id:'daynight',a:'jour',b:'nuit',title:'Jour / Nuit',sub:'Day / Night'});
+  var SET=load('fr_set',{rate:0.85,name:''}),resetAsk=false;
+  function rSet(){
+    $('#s-set').innerHTML=
+      '<div class="top"><div><div class="eyebrow">Profile</div><h1 style="font-size:1.7rem">Settings</h1></div></div>'+
+      '<div class="card stack"><label class="eyebrow" for="setName">Your name</label><input id="setName" class="inp" value="'+SET.name.replace(/"/g,'')+'" maxlength="24" placeholder="Optional">'+
+      '<label class="eyebrow" for="setRate">French voice speed</label><select id="setRate" class="inp"><option value="0.7">Slow</option><option value="0.85">Normal</option><option value="1">Fast</option></select>'+
+      '<button class="btn ghost" data-say="Bonjour, comment ça va ?">Test the voice</button></div>'+
+      '<div class="card stack"><div class="eyebrow">Your data</div><p class="tag">Stored only in this browser.</p>'+
+      (resetAsk?'<p><b>Erase all uses and progress?</b></p><div class="row"><button class="btn ghost" data-reset="no">Keep</button><button class="btn" data-reset="yes">Erase</button></div>':'<button class="btn ghost" data-reset="ask">Reset everything</button>')+'</div>';
+    $('#setRate').value=String(SET.rate);
+  }
+
+  var FILTERS=[['all','All'],['today','Today'],['7','7 days'],['30','30 days']];
+  function when(ts){
+    var d=new Date(ts),n=new Date(),mid=new Date();mid.setHours(0,0,0,0);
+    var t=pad(d.getHours())+':'+pad(d.getMinutes());
+    if(ts>=mid.getTime())return 'Today, '+t;
+    if(ts>=mid.getTime()-864e5)return 'Yesterday, '+t;
+    return d.toLocaleDateString(undefined,{day:'numeric',month:'short'})+', '+t;
+  }
+  function rHistory(){
+    var mid=new Date();mid.setHours(0,0,0,0);var lim={all:0,today:mid.getTime(),'7':Date.now()-7*864e5,'30':Date.now()-30*864e5}[histFilter];
+    var list=events.filter(function(e){return e.ts>=lim}).sort(function(a,b){return b.ts-a.ts});
+    var hasSample=events.some(function(e){return e.sample});
+    var per={};events.forEach(function(e){per[e.expr]=Math.max(per[e.expr]||0,e.ts)});
+    var revive=Object.keys(per).filter(function(k){return per[k]<Date.now()-864e5});
+    var sum={};list.forEach(function(e){var o=sum[e.expr]||(sum[e.expr]={n:0,last:0});o.n++;o.last=Math.max(o.last,e.ts)});
+    var rows=Object.keys(sum).sort(function(a,b){return sum[b].n-sum[a].n});
+    var ic=function(c){return '<div class="ic '+(c.kind==='d'||c.kind==='n'?c.kind:'o')+'">'+ico(c.kind,24)+'</div>'};
+    var shown=histAll?list:list.slice(0,5);
+    $('#s-history').innerHTML=
+      '<div class="top"><div><div class="eyebrow">Real uses</div><h1 style="font-size:1.7rem">History</h1></div><div class="num">'+list.length+'</div></div>'+
+      '<div class="chips">'+FILTERS.map(function(f){return '<button data-f="'+f[0]+'" aria-pressed="'+(histFilter===f[0])+'">'+f[1]+'</button>'}).join('')+'</div>'+
+      (revive.length?'<div class="reply soft">To bring back: '+revive.map(function(k){return CONTENT[k].fr}).join(', ')+'.</div>':'')+
+      (rows.length?'<div class="card"><div class="hist">'+rows.map(function(k){var c=CONTENT[k];
+        return '<div class="it">'+ic(c)+'<div class="nm">'+c.fr+'<small>last '+when(sum[k].last)+'</small></div><div class="p">×'+sum[k].n+'</div></div>'}).join('')+'</div></div>':
+        '<div class="card"><p class="tag">No real uses in this period yet. Start a mission and tap +1 when you say it.</p></div>')+
+      (list.length>5?'<button class="btn ghost" data-all="1">'+(histAll?'Show latest 5 only':'Show all '+list.length+' uses')+'</button>':'')+
+      (histAll&&list.length?'<div class="card"><div class="hist">'+shown.map(function(e){var c=CONTENT[e.expr];
+        return '<div class="it">'+ic(c)+'<div class="nm">'+c.fr+(e.sample?'<span class="badge">example</span>':'')+'<small>'+when(e.ts)+'</small></div><div class="p">+1</div></div>'}).join('')+'</div></div>':'')+
+      (hasSample?'<button class="btn ghost" data-clear="1">Clear example uses</button>':'');
+  }
+
+  /* ---------- navigation ---------- */
+  var TAB_LABELS={home:'Home',lesson:'Learn',life:'My life',mission:'Mission',history:'History',prog:'Progress'};var TAB_OF={ctx:'home',set:'prog',fran:'lesson',gram:'life',result:'mission'};
+  function renderTabs(){
+    document.querySelectorAll('.tabs button').forEach(function(b){var k=b.dataset.go;
+      b.innerHTML=svg(k,24)+'<span>'+TAB_LABELS[k]+'</span>';
+      if(k===cur||TAB_OF[cur]===k)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+  }
+  var R={home:rHome,lesson:rLesson,fran:rFran,life:rLife,gram:rGram,prog:rProg,set:rSet,ctx:rCtx,mission:rMission,result:rResult,history:rHistory};
+  var SEC={home:'s-home',lesson:'s-lesson',fran:'s-fran',life:'s-life',gram:'s-gram',prog:'s-prog',set:'s-set',ctx:'s-ctx',mission:'s-mission',result:'s-result',history:'s-history'};
+  function go(k){
+    cur=k;Object.keys(SEC).forEach(function(x){$('#'+SEC[x]).classList.toggle('hide',x!==k)});
+    R[k]();renderTabs();window.scrollTo(0,0);
+  }
+
+  document.addEventListener('click',function(ev){
+    var t=ev.target.closest('button');if(!t)return;var d=t.dataset;
+    if(d.say){say(d.say);return}
+    if(d.go){go(d.go);return}
+    if(d.open){famView=false;lessonExpr=d.open;sceneAnswer=null;level=0;go('lesson');return}
+    if(d.sp){if(story.pick===null){story.pick=+d.sp;if(story.pick===0)story.score++;var sf=storyFor(story.key.replace(/(morning|evening|bonjour|bonsoir)$/,'').replace(/^greet.*/,'greet'));var so=sf.steps[story.step].opts[story.pick][0];say(so)}R.lesson();return}
+    if(d.sn){story.step++;story.pick=null;R.lesson();return}
+    if(d.sr){story={key:story.key,step:0,pick:null,score:0};R.lesson();return}
+    if(d.fr){lessonExpr=d.fr;level=0;go('fran');return}
+    if(d.pair){famView=(d.pair==='family');lessonExpr=PAIRS.filter(function(x){return x.id===d.pair})[0].a;sceneAnswer=null;level=0;R.lesson();return}
+    if(d.day){lifeDay=d.day;lifePick=null;lifeStep=0;R.life();return}
+    if(d.lp){lifePick=+d.lp;lifeStep=0;var ls=lifeSeen();ls[lifeDay]=(ls[lifeDay]||0)+1;save('fr_life',ls);R.life();return}
+    if(d.lstep){lifeStep=Math.max(0,Math.min(lifeSegs().length,lifeStep+(+d.lstep)));R.life();return}
+    if(d.reset){if(d.reset==='ask')resetAsk=true;else if(d.reset==='no')resetAsk=false;else{events=[];save('fr_events',events);save('fr_life',{hier:0,aujourdhui:0,demain:0});demoStage=0;resetAsk=false}R.set();return}
+    if(d.wx){ctxWx=d.wx;ctxLevel=0;R.ctx();return}
+    if(d.cl){ctxLevel=Math.max(0,Math.min(99,ctxLevel+(+d.cl)));R.ctx();return}
+    if(d.stage){demoStage=demoStage===0?2:demoStage===2?3:0;R.prog();return}
+    if(d.en){autoEn=!autoEn;R.prog();return}
+    if(d.gt){gramTopic=d.gt;gramMore=false;R.gram();return}
+    if(d.pat){gramTopic=d.pat;gramMore=false;go('gram');return}
+    if(d.more){gramMore=!gramMore;R.gram();return}
+    if(d.start){startMission(d.start);return}
+    if(d.lvl){level=Math.max(0,Math.min(franSegs(franId()).length,level+(+d.lvl)));R.fran();return}
+    if(d.plus){mission.uses++;addUse(mission.expr,'mission');var mu=$('#mu');if(mu)mu.textContent=mission.uses;return}
+    if(d.pause){mission.running=!mission.running;if(mission.running&&!mission.timer)mission.timer=setInterval(tick,1000);R.mission();return}
+    if(d.finish){finishMission();return}
+    if(d.f){histFilter=d.f;R.history();return}
+    if(d.all){histAll=!histAll;R.history();return}
+    if(d.clear){events=events.filter(function(e){return !e.sample});save('fr_events',events);R.history();return}
+  });
+  document.addEventListener('input',function(e){if(e.target.id==='setName'){SET.name=e.target.value;save('fr_set',SET)}});
+  document.addEventListener('change',function(e){if(e.target.id==='setRate'){SET.rate=+e.target.value;save('fr_set',SET)}});
+  $('#demoTime').addEventListener('change',function(e){demoTime=e.target.value;sceneAnswer=null;lessonExpr=null;go(cur==='result'?'home':cur)});
+  try{window.speechSynthesis&&window.speechSynthesis.getVoices()}catch(e){}
+  go('home');
+})();
+</script>
+
+</body></html>
